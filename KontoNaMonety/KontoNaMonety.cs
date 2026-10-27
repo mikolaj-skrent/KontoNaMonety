@@ -13,12 +13,13 @@ namespace KontoNaMonety
         {
             get { return _saldo; }
             set { _saldo = value; }
-        } 
+        }
 
-
-
-
-
+        public string Numer
+        {
+            get { return _numer; }
+            set { _numer = value; }
+        }
     }
 
 }

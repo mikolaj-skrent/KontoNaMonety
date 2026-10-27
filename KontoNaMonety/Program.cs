@@ -6,19 +6,33 @@ namespace KontoNaMonety
     {
         static void Main(string[] args)
         {
+
             KontoNaMonety kontoBankowe = new KontoNaMonety();
 
+            KontoNaMonety kontoTestowe = new KontoNaMonety();
             Automat automat = new Automat();
 
-            automat.WrzucMonete(kontoBankowe, "1");
+            automat.WrzucMonete(kontoBankowe, "0.5");
+            automat.WrzucMonete(kontoBankowe, "0.2");
+            automat.WrzucMonete(kontoBankowe, "0.1");
+            automat.WrzucMonete(kontoBankowe, "5");
+            automat.WrzucMonete(kontoBankowe, "2");
+            WyswietlStanKonta(kontoBankowe, "dla konta bankowego");
+            automat.WyswietlNumerKonta(kontoBankowe);
+            Console.WriteLine("-----------------------");
 
-            WyswietlStanKonta(kontoBankowe);
+            automat.WrzucMonete(kontoTestowe, "2");
+            automat.WrzucMonete(kontoTestowe, "1");
+            automat.WrzucMonete(kontoTestowe, "0.5");
+
+            WyswietlStanKonta(kontoTestowe, "dla konta testowego");
+            automat.WyswietlNumerKonta(kontoTestowe);
 
         }
 
-        static void WyswietlStanKonta(KontoNaMonety kontoBankowe)
+        static void WyswietlStanKonta(KontoNaMonety kontoBankowe, string opis)
         {
-            Console.WriteLine("Stan konta: " + kontoBankowe.Saldo.ToString("F2") + " zł");
+            Console.WriteLine("Stan konta " + opis + ": " + kontoBankowe.Saldo.ToString("F2") + " zł");
         }
     }
 }
