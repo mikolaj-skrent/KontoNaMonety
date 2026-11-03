@@ -17,6 +17,8 @@ namespace KontoNaMonety
             automat.WrzucMonete(kontoBankowe, "0.1");
             automat.WrzucMonete(kontoBankowe, "5");
             automat.WrzucMonete(kontoBankowe, "2");
+            automat.WrzucMonete(kontoBankowe, "abc"); // zły odczyt nominału monety
+            automat.WrzucMonete(kontoBankowe, "7"); // moneta nie jest zgodna z nominałami, które przyjmuje automat i nie zostaje ona dodana do konta bankowego
             WyswietlStanKonta(kontoBankowe, "dla konta bankowego");
             automat.WyswietlNumerKonta(kontoBankowe);
             Console.WriteLine("-----------------------");
@@ -24,10 +26,11 @@ namespace KontoNaMonety
             automat.WrzucMonete(kontoTestowe, "2");
             automat.WrzucMonete(kontoTestowe, "1");
             automat.WrzucMonete(kontoTestowe, "0.5");
-
             WyswietlStanKonta(kontoTestowe, "dla konta testowego");
             automat.WyswietlNumerKonta(kontoTestowe);
-
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("Łączna ilość monet:");
+            automat.PokazMonety();
         }
 
         static void WyswietlStanKonta(KontoNaMonety kontoBankowe, string opis)
