@@ -4,48 +4,39 @@ internal class Program
 {
     private static void Main()
     {
-        KontoBankowe pierwszeKonto = new();
-        KontoBankowe drugieKonto = new();
+        KontoBankowe konto = new();
+        Automat automat = new(2);
+        Bankomat bankomat = new();
 
-        Automat automat = new(pojemnoscNominalu: 2);
+        Console.WriteLine($"Numer konta: {konto.Numer}");
+        // /n preskakuje do kolejnej linii i dopiero wtedy wpisuje tekst
+        Console.WriteLine("\nWpłata monet:");
+        automat.WrzucMonety(konto, "5 2 1 0.5 0.2 0.1 3 abc");
 
-        Console.WriteLine($"Numer pierwszego konta: {pierwszeKonto.Numer}");
-        Console.WriteLine($"Numer drugiego konta: {drugieKonto.Numer}");
-        Console.WriteLine( "---------------------------" );
+        Console.WriteLine("\nPróba przekroczenia pojemności:");
+        automat.WrzucMonety(konto, "5 5 5");
 
-        Console.WriteLine("Wpłata pierwsza:");
-        automat.WrzucMonety(
-            pierwszeKonto,
-            "5 2 1 0.5 0.2 0.1 3 abc");
+        Console.WriteLine("\nŁadowanie bankomatu:");
+        bankomat.ZaladujMonety(5m, 1);
+        bankomat.ZaladujMonety(2m, 2);
+        bankomat.ZaladujMonety(1m, 1);
+        bankomat.ZaladujMonety(0.5m, 1);
+        bankomat.ZaladujMonety(0.2m, 2);
+        bankomat.ZaladujMonety(0.1m, 1);
 
-        Console.WriteLine("---------------------------");
+        Console.WriteLine("\nWypłata 6,50 zł:");
+        bankomat.Wyplac(konto, 6.5m);
 
-        Console.WriteLine("Próba przekroczenia pojemności:");
-        automat.WrzucMonety(
-            pierwszeKonto,
-            "5 5 5");
+        Console.WriteLine("\nWypłata większa niż saldo:");
+        bankomat.Wyplac(konto, 100m);
 
-        Console.WriteLine("---------------------------");
+        Console.WriteLine("\nKwota niemożliwa do wydania:");
+        bankomat.Wyplac(konto, 1.8m);
 
-        Console.WriteLine("Wpłata na drugie konto:");
-        automat.WrzucMonety(
-            drugieKonto,
-            "2 0.5 abc 7");
+        Console.WriteLine($"\nStan konta: {konto.StanKonta():F2} zł");
+        konto.PokazHistorieWplat();
 
-        Console.WriteLine("---------------------------");
-
-        Console.WriteLine($"Stan pierwszego konta: {pierwszeKonto.StanKonta():F2} zł");
-        Console.WriteLine($"Numer pierwszego konta: {pierwszeKonto.Numer}");
-        pierwszeKonto.PokazHistorieWplat();
-
-        Console.WriteLine("---------------------------");
-
-        Console.WriteLine($"Stan drugiego konta: {drugieKonto.StanKonta():F2} zł");
-        Console.WriteLine($"Numer drugiego konta: {drugieKonto.Numer}");
-        drugieKonto.PokazHistorieWplat();
-
-        Console.WriteLine("---------------------------");
-
-        automat.PokazMonety();
+        Console.WriteLine();
+        bankomat.PokazMonety();
     }
 }

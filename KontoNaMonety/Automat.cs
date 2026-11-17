@@ -4,8 +4,8 @@ namespace KontoNaMonety;
 
 internal class Automat
 {
-    // Nominały występują w kodzie tylko tutaj.
-    private static readonly decimal[] PrzyjmowaneMonety =
+    // Jedyna tablica nominałów używana przez Automat i Bankomat.
+    public static readonly decimal[] Nominały =
     [
         5m, 2m, 1m, 0.5m, 0.2m, 0.1m
     ];
@@ -17,7 +17,7 @@ internal class Automat
     {
         _pojemnoscNominalu = pojemnoscNominalu;
 
-        foreach (decimal nominał in PrzyjmowaneMonety)
+        foreach (decimal nominał in Nominały)
         {
             _liczbaMonet[nominał] = 0;
         }
@@ -25,7 +25,6 @@ internal class Automat
 
     public void WrzucMonety(KontoBankowe konto, string tekst)
     {
-        // metoda split dzieli tekst przy napotkaniu jednego z znakow: tabulator, spacja, enter, nowa linia
         string[] odczyty = tekst.Split(
             [' ', '\t', '\r', '\n'],
             StringSplitOptions.RemoveEmptyEntries);
@@ -45,7 +44,7 @@ internal class Automat
                 continue;
             }
 
-            if (!PrzyjmowaneMonety.Contains(wartosc))
+            if (!Nominały.Contains(wartosc))
             {
                 Console.WriteLine($"Zła moneta: {wartosc} zł");
                 continue;
@@ -77,11 +76,10 @@ internal class Automat
 
         decimal suma = 0m;
 
-        foreach (decimal nominał in PrzyjmowaneMonety)
+        foreach (decimal nominał in Nominały)
         {
             int liczba = _liczbaMonet[nominał];
-            decimal wartość = liczba * nominał;
-            suma += wartość;
+            suma += liczba * nominał;
 
             Console.WriteLine($"{nominał} zł: {liczba} szt.");
         }

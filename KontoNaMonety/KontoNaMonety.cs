@@ -7,7 +7,7 @@ internal class KontoBankowe
     private readonly List<decimal> _historiaWplat = [];
 
     public KontoBankowe()
-    { 
+    {
         Numer = ++_ostatniNumerKonta;
     }
 
@@ -17,6 +17,17 @@ internal class KontoBankowe
     {
         _saldo += kwota;
         _historiaWplat.Add(kwota);
+    }
+
+    public bool Wyplac(decimal kwota)
+    {
+        if (kwota <= 0 || kwota > _saldo)
+        {
+            return false;
+        }
+
+        _saldo -= kwota;
+        return true;
     }
 
     public decimal StanKonta()
