@@ -1,54 +1,25 @@
-﻿namespace KontoNaMonety;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-internal class KontoBankowe
+namespace KontoNaMonety
 {
-    private static int _ostatniNumerKonta;
-    private decimal _saldo;
-    private readonly List<decimal> _historiaWplat = [];
-
-    public KontoBankowe()
+    internal class KontoNaMonety
     {
-        Numer = ++_ostatniNumerKonta;
-    }
+        private decimal _saldo;
+        private string _numer;
 
-    public int Numer { get; }
-
-    public void Wplac(decimal kwota)
-    {
-        _saldo += kwota;
-        _historiaWplat.Add(kwota);
-    }
-
-    public bool Wyplac(decimal kwota)
-    {
-        if (kwota <= 0 || kwota > _saldo)
+        public decimal Saldo
         {
-            return false;
+            get { return _saldo; }
+            set { _saldo = value; }
         }
 
-        _saldo -= kwota;
-        return true;
-    }
-
-    public decimal StanKonta()
-    {
-        return _saldo;
-    }
-
-    public void PokazHistorieWplat()
-    {
-        Console.WriteLine($"Historia wpłat konta numer {Numer}:");
-        Console.WriteLine($"Liczba wpłat: {_historiaWplat.Count}");
-
-        if (_historiaWplat.Count == 0)
+        public string Numer
         {
-            Console.WriteLine("Brak wpłat.");
-            return;
-        }
-
-        for (int i = 0; i < _historiaWplat.Count; i++)
-        {
-            Console.WriteLine($"{i + 1}. {_historiaWplat[i]:F2} zł");
+            get { return _numer; }
+            set { _numer = value; }
         }
     }
+
 }

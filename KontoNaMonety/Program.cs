@@ -1,42 +1,51 @@
-﻿namespace KontoNaMonety;
+﻿using System.Runtime.InteropServices;
 
-internal class Program
+namespace KontoNaMonety
 {
-    private static void Main()
+    internal class Program
     {
-        KontoBankowe konto = new();
-        Automat automat = new(2);
-        Bankomat bankomat = new();
+        static void Main(string[] args)
+        {
 
-        Console.WriteLine($"Numer konta: {konto.Numer}");
-        // /n preskakuje do kolejnej linii i dopiero wtedy wpisuje tekst
-        Console.WriteLine("\nWpłata monet:");
-        automat.WrzucMonety(konto, "5 2 1 0.5 0.2 0.1 3 abc");
+            KontoNaMonety kontoBankowe = new KontoNaMonety();
 
-        Console.WriteLine("\nPróba przekroczenia pojemności:");
-        automat.WrzucMonety(konto, "5 5 5");
+            KontoNaMonety kontoTestowe = new KontoNaMonety();
+            Automat automat = new Automat();
 
-        Console.WriteLine("\nŁadowanie bankomatu:");
-        bankomat.ZaladujMonety(5m, 1);
-        bankomat.ZaladujMonety(2m, 2);
-        bankomat.ZaladujMonety(1m, 1);
-        bankomat.ZaladujMonety(0.5m, 1);
-        bankomat.ZaladujMonety(0.2m, 2);
-        bankomat.ZaladujMonety(0.1m, 1);
+            automat.WrzucMonete(kontoBankowe, "0.5");
+            automat.WrzucMonete(kontoBankowe, "0.2");
+            automat.WrzucMonete(kontoBankowe, "0.1");
+            automat.WrzucMonete(kontoBankowe, "5");
+            automat.WrzucMonete(kontoBankowe, "2");
+            automat.WrzucMonete(kontoBankowe, "abc"); // zły odczyt nominału monety
+            automat.WrzucMonete(kontoBankowe, "7"); // moneta nie jest zgodna z nominałami, które przyjmuje automat i nie zostaje ona dodana do konta bankowego
+            WyswietlStanKonta(kontoBankowe, "dla konta bankowego");
+            automat.WyswietlNumerKonta(kontoBankowe);
+            Console.WriteLine("-----------------------");
 
-        Console.WriteLine("\nWypłata 6,50 zł:");
-        bankomat.Wyplac(konto, 6.5m);
+            automat.WrzucMonete(kontoTestowe, "2");
+            automat.WrzucMonete(kontoTestowe, "1");
+            automat.WrzucMonete(kontoTestowe, "0.5");
+            WyswietlStanKonta(kontoTestowe, "dla konta testowego");
+            automat.WyswietlNumerKonta(kontoTestowe);
+            Console.WriteLine("-----------------------");
+            Console.WriteLine("Łączna ilość monet:");
+            automat.PokazMonety();
+        }
 
-        Console.WriteLine("\nWypłata większa niż saldo:");
-        bankomat.Wyplac(konto, 100m);
-
-        Console.WriteLine("\nKwota niemożliwa do wydania:");
-        bankomat.Wyplac(konto, 1.8m);
-
-        Console.WriteLine($"\nStan konta: {konto.StanKonta():F2} zł");
-        konto.PokazHistorieWplat();
-
-        Console.WriteLine();
-        bankomat.PokazMonety();
+        static void WyswietlStanKonta(KontoNaMonety kontoBankowe, string opis)
+        {
+            Console.WriteLine("Stan konta " + opis + ": " + kontoBankowe.Saldo.ToString("F2") + " zł");
+        }
     }
 }
+
+
+// Konto bankowe, które da się wpłacać tylko monety.
+// Monety mozna wrzucic poprzez automat, który przyjmuje monety i wpłaca je na konto.
+// automat przyjmuje monety o nominałach 1, 2, 5, 10, 20, 50 groszy oraz 1, 2 i 5 złote.
+// Po wrzuceniu monety automat:
+// powiadamia, że jest ok, albo moneta nie jest zgodna z nominałami, które przyjmuje.
+// Po wrzuceniu monety automat wpłaca ją na konto bankowe.
+// Monety mozna wrzucac pojedynczo
+// Automat liczy ilosc i rodzaj wrzuconych monet
